@@ -10,6 +10,11 @@
 
 <body>
 
+    <ul>
+        <li><a href="./about.php">About</a></li>
+        <li><a href="./privacy.php">Privacy</a></li>
+    </ul>
+
     <form method="GET">
         <button>GET</button>
     </form>
@@ -35,7 +40,6 @@
     <footer>
         <?php
         echo "&copy; " . date("y");
-        print_r($_REQUEST);
         ?>
     </footer>
 

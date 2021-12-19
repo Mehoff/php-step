@@ -45,16 +45,43 @@ function onGET()
     var_dump($_GET);
 }
 
+function tryGetParameterValue($param_name, $source)
+{
+    $data = $source[$param_name];
+
+    if (is_null($data)) {
+        sendError(400, "Bad request. Required parameter '$param_name' is missing");
+    }
+
+    return $data;
+}
+
+function tryParseJson($file_path = "php://input")
+{
+    $body = file_get_contents("$file_path");
+    $data = json_decode($body, true);
+
+    if (JSON_ERROR_NONE !== json_last_error()) {
+        sendError(412, "Json parse error");
+    }
+
+    return $data;
+}
+
 function onPOST()
 {
     $contentType = strtolower(trim($_SERVER['CONTENT_TYPE']));
 
     if ($contentType == "application/json") {
+        $data = tryParseJson();
+
+        $a = tryGetParameterValue('a', $data);
+        $b = tryGetParameterValue('b', $data);
+
+        echo $a + $b;
+    } else {
+        sendError(415, "Unsupported Media Type");
     }
-
-    var_dump($_POST);
-
-    $body = file_get_contents("php://input");
 }
 
 function onDELETE()

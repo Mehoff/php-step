@@ -9,9 +9,9 @@ document.addEventListener("submit", (e) => submitHandler(e));
 const sendPOST = () => {
   fetch("/api", {
     method: "POST",
-    body: JSON.stringify({ x: 10, y: 20 }),
+    body: JSON.stringify({ a: 10, b: 20 }),
     headers: {
-      "content-type": "application/x-www-form-urlencoded",
+      "content-type": "application/json",
     },
   })
     .then((r) => r.text())
