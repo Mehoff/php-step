@@ -10,7 +10,7 @@
 
 <body>
     <h1>Privacy</h1>
-    <a href="/">>Return to home page</a>
+    <a href="../html/index.php">>Return to home page</a>
 </body>
 
 </html>

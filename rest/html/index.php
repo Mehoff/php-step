@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
     <ul>
         <li><a href="./about.php">About</a></li>
         <li><a href="./privacy.php">Privacy</a></li>
@@ -19,9 +18,16 @@
         <button>GET</button>
     </form>
 
-    <form method="POST">
-        <button>POST</button>
-    </form>
+    <div style="padding: 10px; border: 1px solid black">
+        <form method="POST">
+            <label name="pictureFile">Выберите картинку для загрузки</label><br />
+            <input type="file" name="pictureFile" /><br />
+            <br />
+            <label name="description">Опишите картинку:</label><br />
+            <input type="text" name="description" /><br />
+            <button>Отправить</button>
+        </form>
+    </div>
 
     <form method="PATCH">
         <button>PATCH</button>

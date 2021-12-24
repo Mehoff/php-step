@@ -6,20 +6,21 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 document.addEventListener("submit", (e) => submitHandler(e));
 
-const sendPOST = () => {
-  fetch("/api", {
+const sendPOST = (files, description) => {
+  var data = new FormData();
+  data.append("pictureFile", files);
+  data.append("description", description);
+
+  fetch("./api/gallery", {
     method: "POST",
-    body: JSON.stringify({ a: 10, b: 20 }),
-    headers: {
-      "content-type": "application/json",
-    },
+    body: data,
   })
     .then((r) => r.text())
     .then((data) => (out.innerText = data));
 };
 
 const sendGET = () => {
-  fetch("/api?x=10&y=20", {
+  fetch("./api/gallery", {
     method: "GET",
   })
     .then((r) => r.text())
@@ -28,20 +29,26 @@ const sendGET = () => {
 
 const submitHandler = (e) => {
   e.preventDefault();
-
   const reqMethod = e.target.getAttribute("method");
 
   if (!reqMethod) throw "Unknown request method!";
 
   switch (reqMethod.toUpperCase()) {
     case "POST":
-      sendPOST();
+      const files = e.target[0].files;
+      const description = e.target[1].value;
+      if (files.length < 1 && description.length < 1) {
+        outputError("Input data validation failed!");
+        return;
+      }
+      sendPOST(files, description);
       break;
     case "GET":
       sendGET();
       break;
-
     default:
       throw "Unrecognized request method";
   }
 };
+
+const outputError = (message = "Error") => (out.innerText = message);
