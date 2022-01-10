@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    <h1>Privacy</h1>
-    <a href="../html/index.php">>Return to home page</a>
+    <h1>About</h1>
+    <a href="./index.php">>Return to home page</a>
 </body>
 
 </html>

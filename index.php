@@ -21,7 +21,7 @@
     <div style="padding: 10px; border: 1px solid black">
         <form method="POST">
             <label name="pictureFile">Выберите картинку для загрузки</label><br />
-            <input type="file" name="pictureFile" /><br />
+            <input type="file" accept="image/*" name="pictureFile" /><br />
             <br />
             <label name="description">Опишите картинку:</label><br />
             <input type="text" name="description" /><br />
