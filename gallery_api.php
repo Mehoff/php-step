@@ -26,8 +26,14 @@ function onGET()
         exit;
     }
 
+    // echo json_encode([
+    //     'data' => $result->fetchAll(PDO::FETCH_ASSOC)
+    // ], JSON_UNESCAPED_UNICODE);
+
     echo json_encode([
-        'data' => $result->fetchAll(PDO::FETCH_ASSOC)
+        'data' => array(
+            'pictures' => $result->fetchAll(PDO::FETCH_ASSOC)
+        )
     ], JSON_UNESCAPED_UNICODE);
 }
 

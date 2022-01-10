@@ -17,9 +17,9 @@
         <li><a href="./privacy.php">Privacy</a></li>
     </ul>
 
-    <form method="GET">
+    <!-- <form method="GET">
         <button>GET</button>
-    </form>
+    </form> -->
 
 
     <div class="utils">
@@ -44,7 +44,7 @@
             </select><br />
             <label for="sort-category">Категория</label><br />
             <select name="sort-category" id="sort-category">
-                <option value="*">Любая</option>
+                <option value="any">Любая</option>
                 <option value="cats">Коты</option>
                 <option value="food">Еда</option>
             </select>
@@ -54,7 +54,7 @@
 
     <div id="gallery">
         <section id="gallery-items">
-            <article style="background-color: violet" class="gallery-item">
+            <!-- <article style="background-color: violet" class="gallery-item">
                 <img src="./uploads/no-image.png">
                 <h3>Dummy gallery item</h3>
                 <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores ipsa architecto ut veniam modi harum provident illum non voluptatem magni fuga, quaerat blanditiis id aperiam eum vitae quo voluptatibus odio.</h4>
@@ -73,7 +73,7 @@
                 <img src="./uploads/no-image.png">
                 <h3>Dummy gallery item</h3>
                 <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores ipsa architecto ut veniam modi harum provident illum non voluptatem magni fuga, quaerat blanditiis id aperiam eum vitae quo voluptatibus odio.</h4>
-            </article>
+            </article> -->
         </section>
     </div>
 
