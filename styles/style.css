@@ -54,11 +54,12 @@ article {
   padding: 5px;
 }
 
+article:hover {
+  transition: 150ms;
+  box-shadow: 30px -16px rgba(0, 0, 0, 0.5);
+}
+
 article image {
   max-width: 15%;
   max-height: 10%;
 }
-
-/* .gallery-item {
-  border-radius: 25%;
-} */

@@ -19,16 +19,28 @@ function onGET()
         sendError(404, "Failed to GET: $DB");
         exit;
     }
+    // Handle GET parameters to edit query (category, date)
+
+    // Query example
+    // $query = "
+    // SELECT 
+    //     G.id,
+    //     G.filename,
+    //     G.moment,
+    //     A.iso639_1,
+    //     L.txt AS descr
+    // FROM 
+    //     Gallery G 
+    //     JOIN Literals L ON L.id_entity = G.id
+    //     JOIN Langs A ON L.id_lang = A.id
+    // " ;
+
     $query = "SELECT * FROM pictures";
     $result = $DB->query($query);
     if ($result === false) {
         sendError(404, "Failed to GET: Error occured on DB query");
         exit;
     }
-
-    // echo json_encode([
-    //     'data' => $result->fetchAll(PDO::FETCH_ASSOC)
-    // ], JSON_UNESCAPED_UNICODE);
 
     echo json_encode([
         'data' => array(
@@ -39,7 +51,6 @@ function onGET()
 
 function onPOST()
 {
-
     echo $_FILES['pictureFile'];
     //$query = "INSERT INTO pictures(filename, description) VALUES(?, ?)";
 }

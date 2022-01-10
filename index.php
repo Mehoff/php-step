@@ -17,19 +17,19 @@
         <li><a href="./privacy.php">Privacy</a></li>
     </ul>
 
-    <!-- <form method="GET">
-        <button>GET</button>
-    </form> -->
-
-
     <div class="utils">
         <div class="utils-item">
             <form method="POST">
                 <span><b>Загрузка картинки</b></span><br />
-                <label name="pictureFile">Выберите картинку для загрузки</label><br />
+                <label name="pictureFile">Выбрать картинку</label><br />
                 <input type="file" accept="image/*" name="pictureFile" /><br />
                 <br />
-                <label name="description">Опишите картинку:</label><br />
+
+                <label name="title">Дайте выбранной картинке название</label><br />
+                <input type="text" name="description" /><br />
+                <br />
+
+                <label name="description">Опишите что изображено на картинке</label><br />
                 <input type="text" name="description" /><br />
                 <button>Отправить</button>
             </form>
@@ -53,40 +53,23 @@
     </div>
 
     <div id="gallery">
-        <section id="gallery-items">
-            <!-- <article style="background-color: violet" class="gallery-item">
-                <img src="./uploads/no-image.png">
-                <h3>Dummy gallery item</h3>
-                <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores ipsa architecto ut veniam modi harum provident illum non voluptatem magni fuga, quaerat blanditiis id aperiam eum vitae quo voluptatibus odio.</h4>
-            </article>
-            <article style="background-color: salmon" class="gallery-item">
-                <img src="./uploads/no-image.png">
-                <h3>Dummy gallery item</h3>
-                <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores ipsa architecto ut veniam modi harum provident illum non voluptatem magni fuga, quaerat blanditiis id aperiam eum vitae quo voluptatibus odio.</h4>
-            </article>
-            <article style="background-color: wheat" class="gallery-item">
-                <img src="./uploads/no-image.png">
-                <h3>Dummy gallery item</h3>
-                <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores ipsa architecto ut veniam modi harum provident illum non voluptatem magni fuga, quaerat blanditiis id aperiam eum vitae quo voluptatibus odio.</h4>
-            </article>
-            <article style="background-color: lightgreen" class="gallery-item">
-                <img src="./uploads/no-image.png">
-                <h3>Dummy gallery item</h3>
-                <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores ipsa architecto ut veniam modi harum provident illum non voluptatem magni fuga, quaerat blanditiis id aperiam eum vitae quo voluptatibus odio.</h4>
-            </article> -->
-        </section>
+        <section id="gallery-items"></section>
     </div>
 
-    <script src="index.js"></script>
+
 
     <p id="out"></p>
 
     <footer style="text-align: center">
         <?php
-        echo "&copy; " . date("y");
+        echo "Mehoff &copy; " . date("y");
         ?>
     </footer>
 
+    <script src="helpers/createPictureElement.js"></script>
+    <script src="helpers/addPictureToGallery.js"></script>
+    <script src="helpers/getArticleBackgroundColor.js"></script>
+    <script src="index.js"></script>
 </body>
 
 

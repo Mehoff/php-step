@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
   if (!out) alert("out is undefined!");
 
   getPictures();
-  // Make a request to database and get raw pictures data
-  // Convert raw pictures data to html elements and put it in 'gallery' section
 });
 
 document.addEventListener("submit", (e) => submitHandler(e));
@@ -21,64 +19,16 @@ const getPictures = (filters = { category: "any", date: "asc" }) => {
         return;
       }
 
-      console.log("API Response: ", res);
-
-      for (const picture of res.data.pictures) {
-        addPictureToGallery(picture);
-      }
+      for (const picture of res.data.pictures) addPictureToGallery(picture);
     });
 };
 
-const addPictureToGallery = (picture) => {
-  const gallery = document.querySelector("#gallery-items");
-  if (!gallery) throw new Error("Gallery element is not defined");
-  try {
-    const pictureElement = createPictureElement(picture);
-    gallery.appendChild(pictureElement);
-  } catch (err) {
-    console.error(err);
-    return;
-  }
-};
-
-const createPictureElement = (picture) => {
-  const article = document.createElement("article");
-  article.className = "gallery-item";
-  article.style.backgroundColor = getBackgroundColor();
-
-  const image = document.createElement("img");
-  image.src = `./uploads/${picture.filename}`;
-
-  const title = document.createElement("h3");
-  title.innerText = picture.title;
-
-  const description = document.createElement("h4");
-  description.innerText = picture.description;
-
-  article.appendChild(image);
-  article.appendChild(title);
-  article.appendChild(description);
-
-  return article;
-};
-
-const getBackgroundColor = () => {
-  const colors = [
-    "violet",
-    "salmon",
-    "pink",
-    "wheat",
-    "lightblue",
-    "lightgreen",
-    "orange",
-  ];
-
-  return colors[Math.floor(Math.random() * colors.length)];
-};
-
-const sendPOST = (files, description) => {
+// Creates new picture, and returns raw picture data
+// Convert it to picture html element and add to gallery-items without reloading
+const sendPOST = (files, title, description) => {
   var data = new FormData();
   data.append("pictureFile", files);
+  data.append("title", title);
   data.append("description", description);
 
   fetch("./api/gallery", {
