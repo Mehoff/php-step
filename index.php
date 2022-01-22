@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="./styles/style.css"> -->
     <link rel="stylesheet" href="./styles/style.css">
     <title>Hello, PHP Rest API!</title>
 </head>
@@ -19,19 +18,19 @@
 
     <div class="utils">
         <div class="utils-item">
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 <span><b>Загрузка картинки</b></span><br />
                 <label name="pictureFile">Выбрать картинку</label><br />
-                <input type="file" accept="image/*" name="pictureFile" /><br />
+                <input type="file" accept="image/*" id="pictureFile" name="pictureFile" required /><br />
                 <br />
 
                 <label name="title">Дайте выбранной картинке название</label><br />
-                <input type="text" name="description" /><br />
+                <input type="text" id="title" name="title" required /><br />
                 <br />
 
                 <label name="description">Опишите что изображено на картинке</label><br />
-                <input type="text" name="description" /><br />
-                <button>Отправить</button>
+                <input type="text" id="description" name="description" required /><br />
+                <button id="btn-submit">Отправить</button>
             </form>
         </div>
 
@@ -43,6 +42,7 @@
                 <option value="desc">Сначала новые</option>
             </select><br />
             <label for="sort-category">Категория</label><br />
+            <!-- Загружать категории сюда -->
             <select name="sort-category" id="sort-category">
                 <option value="any">Любая</option>
                 <option value="cats">Коты</option>
@@ -55,8 +55,6 @@
     <div id="gallery">
         <section id="gallery-items"></section>
     </div>
-
-
 
     <p id="out"></p>
 

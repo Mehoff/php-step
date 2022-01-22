@@ -1,4 +1,4 @@
-/* Navigation */
+/* Обнуляемся :) */
 
 body {
   padding: 0;
@@ -10,6 +10,8 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/* Navigation */
 
 ul > li {
   display: inline-block;
@@ -26,6 +28,8 @@ li:hover {
   font-style: italic;
 }
 
+/* Utils */
+
 .utils {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -36,6 +40,8 @@ li:hover {
   padding: 5px;
   margin: 5px;
 }
+
+/* Gallery */
 
 .gallery {
   display: inline-block;
@@ -56,10 +62,11 @@ article {
 
 article:hover {
   transition: 150ms;
+  cursor: pointer;
   box-shadow: 30px -16px rgba(0, 0, 0, 0.5);
 }
 
-article image {
-  max-width: 15%;
-  max-height: 10%;
+article img {
+  max-width: 33.333333%;
+  max-height: 33.33333%;
 }

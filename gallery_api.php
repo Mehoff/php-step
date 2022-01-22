@@ -1,15 +1,21 @@
 <?php
 
 @include "send_error.php";
+error_reporting(0);
+
+
 
 $method = strtoupper($_SERVER['REQUEST_METHOD']);
 
 switch ($method) {
     case 'POST':
         onPOST();
+        break;
     case 'GET':
         onGET();
         break;
+    default:
+        sendError(502, 'Unsupported method type');
 }
 
 function onGET()
@@ -39,7 +45,6 @@ function onGET()
     $result = $DB->query($query);
     if ($result === false) {
         sendError(404, "Failed to GET: Error occured on DB query");
-        exit;
     }
 
     echo json_encode([
@@ -51,8 +56,91 @@ function onGET()
 
 function onPOST()
 {
-    echo $_FILES['pictureFile'];
-    //$query = "INSERT INTO pictures(filename, description) VALUES(?, ?)";
+
+    if (
+        !isset($_FILES['pictureFile']['error']) ||
+        is_array($_FILES['pictureFile']['error']) ||
+        !isset($_POST['title']) ||
+        !isset($_POST['description'])
+    ) {
+        sendError(500, 'Invalid parameters.');
+    }
+
+
+    $title = trim($_POST['title']);
+    $description = trim($_POST['description']);
+
+    switch ($_FILES['pictureFile']['error']) {
+        case UPLOAD_ERR_OK:
+            break;
+        case UPLOAD_ERR_NO_FILE:
+            sendError(500, 'No file sent.');
+            break;
+        case UPLOAD_ERR_INI_SIZE:
+        case UPLOAD_ERR_FORM_SIZE:
+            sendError(500, 'Exceeded filesize limit.');
+            break;
+        default:
+            sendError(500, 'Unknown errors.');
+    }
+
+    if ($_FILES['pictureFile']['size'] > 1000000) {
+        sendError(500, 'Exceeded filesize limit.');
+    }
+
+    // TODO: Get file`s ext
+    $filename = sha1_file($_FILES['pictureFile']['tmp_name']) . ".jpeg";
+
+    // if (!move_uploaded_file(
+    //     $_FILES['pictureFile']['tmp_name'],
+    //     sprintf(
+    //         './uploads/%s.%s',
+    //         $filename,
+    //         'jpeg'
+    //     )
+    // )) 
+
+    if (!move_uploaded_file(
+        $_FILES['pictureFile']['tmp_name'],
+        sprintf(
+            './uploads/%s',
+            $filename
+        )
+    )) {
+        sendError(500, 'Failed to move uploaded file.');
+    }
+
+    $DB = connectDB();
+    if (is_string($DB)) {  // string - means error
+        sendError(
+            507,
+            "Internal error 1.1"
+        );
+    }
+
+    $sql = 'INSERT INTO pictures(title, filename, description) VALUES(:title, :filename, :description)';
+
+    try {
+        $statement = $DB->prepare($sql);
+        $statement->execute([
+            ':title' => $title,
+            ':filename' => $filename,
+            ':description' => $description
+        ]);
+    } catch (PDOException $ex) {
+        sendError(
+            501,
+            $ex->getMessage()
+        );
+    }
+
+    echo json_encode([
+        'code' => 200,
+        'title' => $title,
+        'filename' => $filename,
+        'description' => $description
+    ]);
+    exit;
 }
 
 function connectDB()
@@ -60,7 +148,7 @@ function connectDB()
     unset($db_config);
     @include "db_config.php";
     if (empty($db_config)) {
-        return "Failed to read database connection configuration";
+        sendError(500, "Failed to read database connection configuration");
     }
 
     try {
@@ -75,7 +163,7 @@ function connectDB()
         );
         $DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $ex) {
-        return $ex->getMessage();
+        sendError(500, $ex->getMessage());
     }
     return $DB;
 }
