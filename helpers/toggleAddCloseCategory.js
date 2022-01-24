@@ -69,5 +69,39 @@ const addCategory = (e) => {
   // Insert if not
   // closeAddCategory()
 
-  alert("Привет, я добавляю новую категорию!");
+  const name = document.querySelector("#categoryName").value.trim();
+  if (!name) throw new Error(`Name is incorrect to make a request: '${name}'`);
+
+  // Returns data.exists = true/false
+  fetch(`./api/gallery/categories?name=${name}`, {
+    method: "GET",
+  })
+    .then((r) => r.json())
+    .then((res) => {
+      console.log(res);
+      if (res.error) {
+        alert(res.error);
+        return;
+      }
+      //   if (res.data.exists) {
+      //     // POST to create new category
+      //     const formData = new FormData();
+      //     formData.append(name);
+
+      //     fetch("./api/gallery/categories", {
+      //       method: "POST",
+      //       body: formData,
+      //     })
+      //       .then((r) => r.json())
+      //       .then((res) => {
+      //         if (res.error) {
+      //           alert(res.error);
+      //           return;
+      //         }
+
+      //         addCategoriesToCategoryList(res.data.categories);
+      //         closeAddCategory();
+      //       });
+      //   }
+    });
 };

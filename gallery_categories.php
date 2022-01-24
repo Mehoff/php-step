@@ -27,10 +27,29 @@ function onGET()
         exit;
     }
 
+    if (isset($_GET['name'])) {
+
+        $name = $_GET["name"];
+
+        $statement = $DB->prepare("SELECT COUNT(*) from categories WHERE name = :name");
+        $statement->execute([
+            ':name' => $name
+        ]);
+        $row = $statement->fetch(PDO::FETCH_NUM);
+
+        echo json_encode([
+            'data' => array(
+                'exists' => $row[0]
+            )
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
     $query = "SELECT * FROM categories";
     $result = $DB->query($query);
     if ($result === false) {
         sendError(404, "Failed to GET: Error occured on DB query\n" . $query);
+        exit;
     }
 
     echo json_encode([
