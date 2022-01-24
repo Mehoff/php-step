@@ -74,19 +74,12 @@ const getCategories = () => {
         alert(res.error);
         return;
       }
-      const categoriesElement = document.querySelector("#sort-category");
-      if (!categoriesElement)
-        throw new Error("Failed to get categories element");
 
-      for (const category of res.data.categories) {
-        const categoryElement = createCategoryElement(category);
-        categoriesElement.appendChild(categoryElement);
-      }
+      if (res.data.categories) addCategoriesToCategoryList(res.data.categories);
+      else throw new Error("Failed to load categories");
     });
 };
 
-// Creates new picture, and returns raw picture data
-// Convert it to picture html element and add to gallery-items without reloading
 const postPicture = (files, title, description) => {
   var data = new FormData();
 

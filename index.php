@@ -43,7 +43,9 @@
             </select><br />
             <label for="sort-category">Категория</label><br />
             <!-- Загружать категории сюда -->
-            <select name="sort-category" id="sort-category"></select>
+            <select name="sort-category" id="sort-category">
+                <option value="all">Все</option>
+            </select>
         </div>
     </div>
 
@@ -60,6 +62,7 @@
     </footer>
 
     <script src="helpers/createCategoryElement.js"></script>
+    <script src="helpers/addCategoriesToCategoryList.js"></script>
     <script src="helpers/createPictureElement.js"></script>
     <script src="helpers/addPictureToGallery.js"></script>
     <script src="helpers/getArticleBackgroundColor.js"></script>
