@@ -5,6 +5,9 @@
 
 error_reporting(0);
 
+$GLOBALS['PICTURES_LIMIT'] = 3;
+
+
 $method = strtoupper($_SERVER['REQUEST_METHOD']);
 
 switch ($method) {
@@ -26,18 +29,29 @@ function onGET()
         exit;
     }
 
-    $query = "SELECT * FROM pictures";
-
-
-    if ($_GET['category'] != 'all') {
-        $query = $query . " WHERE categoryId = " . trim($_GET['category']);
+    if (!isset($_GET['page']) || !isset($_GET['category'])) {
+        sendError(404, 'Needed parameter is missing');
+        exit;
     }
 
-    // Sort by 
-    // if($_GET['date']){
-    //     $query = $query . ""
-    // }
+    $PAGE = $_GET['page'];
 
+    if (!is_numeric($PAGE)) {
+        echo json_encode([
+            'error' => 'Page is not a number'
+        ]);
+        exit;
+    }
+
+    $OFFSET = $PAGE * $GLOBALS['PICTURES_LIMIT'];
+
+    $query = "SELECT * FROM pictures";
+
+    if ($_GET['category'] != 'all') {
+        $query = $query . " WHERE categoryId = " . $_GET['category'];
+    }
+
+    $query = $query . " LIMIT " . $GLOBALS['PICTURES_LIMIT'] . " OFFSET " . $OFFSET;
 
     $result = $DB->query($query);
     if ($result === false) {
@@ -46,7 +60,8 @@ function onGET()
 
     echo json_encode([
         'data' => array(
-            'pictures' => $result->fetchAll(PDO::FETCH_ASSOC)
+            'pictures' => $result->fetchAll(PDO::FETCH_ASSOC),
+            'query' => $query
         )
     ], JSON_UNESCAPED_UNICODE);
     exit;
@@ -90,8 +105,6 @@ function onPOST()
     if ($_FILES['pictureFile']['size'] > 1000000) {
         sendError(500, 'Exceeded filesize limit.');
     }
-
-
 
     // TODO: Get file`s ext
     $filename = sha1_file($_FILES['pictureFile']['tmp_name']) . ".jpeg";

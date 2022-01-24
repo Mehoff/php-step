@@ -11,10 +11,6 @@ function sendError($statusCode = 500, $message = "Internal server error")
     if (is_string($message))
         $msg = $message;
 
-    http_response_code($code);
-
-    logError($msg);
-
     echo json_encode([
         'message' => $msg,
         'code' => $code

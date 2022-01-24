@@ -61,6 +61,13 @@
         <section id="gallery-items"></section>
     </div>
 
+    <div id="page-selector">
+        <button id="page-prev">
+            Предыдущая </button>
+        <span id="page-num">0</span>
+        <button id="page-next">Следующая</button>
+    </div>
+
     <p id="out"></p>
 
     <footer style="text-align: center">
