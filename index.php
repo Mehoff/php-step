@@ -28,7 +28,7 @@
                 <input type="text" id="title" name="title" required /><br />
                 <br />
 
-                <label name="title">Выберите категорию картинки</label><br />
+                <label name="category">Выберите категорию картинки</label><br />
                 <select name="create-picture-category" id="create-picture-category">
                     <option value="all">Без категории</option>
                 </select>
@@ -68,7 +68,8 @@
         echo "Mehoff &copy; " . date("y");
         ?>
     </footer>
-
+    <script src="helpers/clearFilterInputs.js"></script>
+    <script src="helpers/clearCreatePictureInputs.js"></script>
     <script src="helpers/toggleAddCloseCategory.js"></script>
     <script src="helpers/createCategoryElement.js"></script>
     <script src="helpers/addCategoriesToCategoryList.js"></script>

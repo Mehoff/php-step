@@ -27,6 +27,18 @@ function onGET()
     }
 
     $query = "SELECT * FROM pictures";
+
+
+    if ($_GET['category'] != 'all') {
+        $query = $query . " WHERE categoryId = " . trim($_GET['category']);
+    }
+
+    // Sort by 
+    // if($_GET['date']){
+    //     $query = $query . ""
+    // }
+
+
     $result = $DB->query($query);
     if ($result === false) {
         sendError(404, "Failed to GET: Error occured on DB query");

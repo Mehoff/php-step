@@ -9,6 +9,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
   getCategories();
 });
 
+const sortCategory = document.querySelector("#sort-category");
+if (!sortCategory) throw new Error("Sort category select is undefined");
+
+const sortDate = document.querySelector("#sort-date");
+if (!sortDate) throw new Error("Sort date select is undefined");
+
 const submitButton = document.querySelector("#btn-submit");
 if (!submitButton) throw new Error("Submit button is undefined");
 
@@ -46,6 +52,7 @@ submitButton.addEventListener("click", (e) => {
     .then((data) => {
       if (data.code === 200) {
         addPictureToGallery(data);
+        clearCreatePictureInputs();
       } else {
         alert(data.message);
       }
@@ -60,11 +67,25 @@ if (!addCloseCategoryButton)
 
 addCloseCategoryButton.addEventListener("click", (e) => {
   e.preventDefault(); // ?
-
   toggleAddCloseCategory(ADD_CLOSE_CATEGORY_SHOWN);
 });
 
-const getPictures = (filters = { category: "any", date: "asc" }) => {
+
+
+const getPicturesIncludeFilters = (e) => {
+  const categoryValue = sortCategory.value;
+  if (!categoryValue) throw new Error("Category value is not defined");
+
+  const dateValue = sortDate.value;
+  if (!dateValue) throw new Error("Date value is not defined");
+
+  getPictures({ category: categoryValue, date: dateValue }, true);
+};
+
+const getPictures = (
+  filters = { category: "all", date: "asc" },
+  clear = false
+) => {
   fetch(`./api/gallery?category=${filters.category}&date=${filters.date}`, {
     method: "GET",
   })
@@ -74,6 +95,8 @@ const getPictures = (filters = { category: "any", date: "asc" }) => {
         console.error(res.error);
         return;
       }
+
+      if (clear) clearGallery();
 
       for (const picture of res.data.pictures) addPictureToGallery(picture);
     });
@@ -93,4 +116,14 @@ const getCategories = () => {
     });
 };
 
+const clearGallery = () => {
+  const galleryItems = document.querySelector("#gallery-items");
+  if (!galleryItems) throw new Error("Gallery items is not defined");
+
+  galleryItems.innerHTML = "";
+};
+
 const outputError = (message = "Undefined error") => (out.innerText = message);
+
+sortCategory.addEventListener("change", getPicturesIncludeFilters);
+sortDate.addEventListener("change", getPicturesIncludeFilters);
