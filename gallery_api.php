@@ -51,19 +51,30 @@ function onGET()
         $query = $query . " WHERE categoryId = " . $_GET['category'];
     }
 
+    $query = $query . " ORDER BY createdAt " . $_GET['date'];
+
     $query = $query . " LIMIT " . $GLOBALS['PICTURES_LIMIT'] . " OFFSET " . $OFFSET;
 
-    $result = $DB->query($query);
-    if ($result === false) {
-        sendError(404, "Failed to GET: Error occured on DB query");
-    }
 
-    echo json_encode([
-        'data' => array(
-            'pictures' => $result->fetchAll(PDO::FETCH_ASSOC),
+
+    try {
+        $result = $DB->query($query);
+        if ($result === false) {
+            sendError(404, "Failed to GET: Error occured on DB query");
+        }
+
+        echo json_encode([
+            'data' => array(
+                'pictures' => $result->fetchAll(PDO::FETCH_ASSOC),
+                'query' => $query
+            )
+        ], JSON_UNESCAPED_UNICODE);
+    } catch (PDOException $ex) {
+        echo json_encode([
+            'error' => $ex->getMessage(),
             'query' => $query
-        )
-    ], JSON_UNESCAPED_UNICODE);
+        ], JSON_UNESCAPED_UNICODE);
+    }
     exit;
 }
 
@@ -127,7 +138,7 @@ function onPOST()
         );
     }
 
-    $sql = 'INSERT INTO pictures(title, filename, description, categoryId) VALUES(:title, :filename, :description, :categoryId)';
+    $sql = 'INSERT INTO pictures(title, filename, description, categoryId, createdAt) VALUES(:title, :filename, :description, :categoryId, CURRENT_TIMESTAMP)';
 
     try {
         $statement = $DB->prepare($sql);

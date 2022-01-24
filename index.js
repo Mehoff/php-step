@@ -107,9 +107,6 @@ const getPictures = (
         return;
       }
 
-      console.log(res);
-      // return;
-
       if (clear) clearGallery();
 
       if (res.data.pictures.length === 0 || !res.data.pictures) {
@@ -173,8 +170,14 @@ const setPageNumber = (num = 1) => {
   pageNumberElement.textContent = PAGE;
 };
 
-sortCategory.addEventListener("change", getPicturesIncludeFilters);
-sortDate.addEventListener("change", getPicturesIncludeFilters);
+sortCategory.addEventListener("change", (e) => {
+  setPageNumber(0);
+  getPicturesIncludeFilters();
+});
+sortDate.addEventListener("change", (e) => {
+  setPageNumber(0);
+  getPicturesIncludeFilters();
+});
 
 pagePrevElement.addEventListener("click", changeToPrevPage);
 pageNextElement.addEventListener("click", changeToNextPage);
