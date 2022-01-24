@@ -1,3 +1,5 @@
+let ADD_CLOSE_CATEGORY_SHOWN = false;
+
 let out;
 document.addEventListener("DOMContentLoaded", (e) => {
   out = document.querySelector("#out");
@@ -7,14 +9,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
   getCategories();
 });
 
-// uncomment
-// document.addEventListener("submit", (e) => submitHandler(e));
-
 const submitButton = document.querySelector("#btn-submit");
 if (!submitButton) throw new Error("Submit button is undefined");
 
 submitButton.addEventListener("click", (e) => {
-  // Trying not reloading page
   e.preventDefault();
 
   const fileInput = document.querySelector("#pictureFile");
@@ -51,6 +49,18 @@ submitButton.addEventListener("click", (e) => {
     });
 });
 
+const addCloseCategoryButton = document.querySelector(
+  "#add-close-category-button"
+);
+if (!addCloseCategoryButton)
+  throw new Error("Add/Close category button is undefined");
+
+addCloseCategoryButton.addEventListener("click", (e) => {
+  e.preventDefault(); // ?
+
+  toggleAddCloseCategory(ADD_CLOSE_CATEGORY_SHOWN);
+});
+
 const getPictures = (filters = { category: "any", date: "asc" }) => {
   fetch(`./api/gallery?category=${filters.category}&date=${filters.date}`, {
     method: "GET",
@@ -79,57 +89,5 @@ const getCategories = () => {
       else throw new Error("Failed to load categories");
     });
 };
-
-const postPicture = (files, title, description) => {
-  var data = new FormData();
-
-  data.append("pictureFile", files);
-  data.append("title", title);
-  data.append("description", description);
-
-  // fetch("./api/gallery", {
-  fetch("./gallery_api.php", {
-    method: "POST",
-    headers: {},
-    body: data,
-  })
-    .then((r) => r.text())
-    .then((data) => {
-      console.log(data);
-      //console.log(text);
-
-      //const pictureFilename = generateUniqueFilename(picture);
-      //console.log("pictureFilename", pictureFilename);
-      // out.innerText = JSON.stringify(pictureData);
-    })
-    .catch((err) => console.error("[ERROR] postPicture", err));
-};
-
-// const submitHandler = (e) => {
-//   //e.preventDefault();
-//   const reqMethod = e.target.getAttribute("method");
-
-//   if (!reqMethod) throw "Unknown request method!";
-
-//   // Added title field - refactor
-//   switch (reqMethod.toUpperCase()) {
-//     case "POST":
-//       const files = e.target[0].files;
-//       const title = e.target[1].value;
-//       const description = e.target[2].value;
-
-//       if (files.length < 1 || description.length < 1 || title.length < 1) {
-//         outputError("Введите данные во все обязательные поля!");
-//         return;
-//       }
-//       postPicture(files, title, description);
-//       break;
-//     case "GET":
-//       sendGET();
-//       break;
-//     default:
-//       throw "Unknown request method!";
-//   }
-// };
 
 const outputError = (message = "Undefined error") => (out.innerText = message);

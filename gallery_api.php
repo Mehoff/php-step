@@ -5,8 +5,6 @@
 
 error_reporting(0);
 
-
-
 $method = strtoupper($_SERVER['REQUEST_METHOD']);
 
 switch ($method) {

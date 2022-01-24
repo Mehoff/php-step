@@ -40,3 +40,19 @@ function onGET()
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
+
+function onPOST()
+{
+    $DB = connectDB();
+    if (is_string($DB)) {
+        sendError(404, "Failed to GET: $DB");
+        exit;
+    }
+
+    // Insert new category here
+
+    echo json_encode([
+        'error' => 'Not implemented'
+    ]);
+    exit;
+}

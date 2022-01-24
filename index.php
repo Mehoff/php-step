@@ -46,6 +46,9 @@
             <select name="sort-category" id="sort-category">
                 <option value="all">Все</option>
             </select>
+            <div id="add-category-container">
+                <span id="add-close-category-button">Добавить категорию</span>
+            </div>
         </div>
     </div>
 
@@ -61,6 +64,7 @@
         ?>
     </footer>
 
+    <script src="helpers/toggleAddCloseCategory.js"></script>
     <script src="helpers/createCategoryElement.js"></script>
     <script src="helpers/addCategoriesToCategoryList.js"></script>
     <script src="helpers/createPictureElement.js"></script>
