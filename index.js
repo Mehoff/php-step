@@ -20,9 +20,11 @@ submitButton.addEventListener("click", (e) => {
 
   const title = document.querySelector("#title").value;
   const description = document.querySelector("#description").value;
+  const category = document.querySelector("#create-picture-category").value;
 
   if (!title) throw new Error("Title is undefined");
   if (!description) throw new Error("Description is undefined");
+  if (!category) throw new Error("Category is undefined");
 
   const file = fileInput.files[0];
   if (!file) throw new Error("File is undefined");
@@ -31,6 +33,7 @@ submitButton.addEventListener("click", (e) => {
   formData.append("pictureFile", file);
   formData.append("title", title.trim());
   formData.append("description", description.trim());
+  formData.append("category", category);
 
   const url = "./gallery_api.php";
   const request = new Request(url, {

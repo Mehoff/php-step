@@ -26,7 +26,6 @@ function onGET()
         exit;
     }
 
-
     $query = "SELECT * FROM pictures";
     $result = $DB->query($query);
     if ($result === false) {
@@ -43,12 +42,12 @@ function onGET()
 
 function onPOST()
 {
-
     if (
         !isset($_FILES['pictureFile']['error']) ||
         is_array($_FILES['pictureFile']['error']) ||
         !isset($_POST['title']) ||
-        !isset($_POST['description'])
+        !isset($_POST['description']) ||
+        !isset($_POST['category'])
     ) {
         sendError(500, 'Invalid parameters.');
     }
@@ -56,6 +55,11 @@ function onPOST()
 
     $title = trim($_POST['title']);
     $description = trim($_POST['description']);
+    $categoryId = trim($_POST['category']);
+
+    if ($categoryId == 'all') {
+        $categoryId = NULL;
+    }
 
     switch ($_FILES['pictureFile']['error']) {
         case UPLOAD_ERR_OK:
@@ -74,6 +78,8 @@ function onPOST()
     if ($_FILES['pictureFile']['size'] > 1000000) {
         sendError(500, 'Exceeded filesize limit.');
     }
+
+
 
     // TODO: Get file`s ext
     $filename = sha1_file($_FILES['pictureFile']['tmp_name']) . ".jpeg";
@@ -96,14 +102,15 @@ function onPOST()
         );
     }
 
-    $sql = 'INSERT INTO pictures(title, filename, description) VALUES(:title, :filename, :description)';
+    $sql = 'INSERT INTO pictures(title, filename, description, categoryId) VALUES(:title, :filename, :description, :categoryId)';
 
     try {
         $statement = $DB->prepare($sql);
         $statement->execute([
             ':title' => $title,
             ':filename' => $filename,
-            ':description' => $description
+            ':description' => $description,
+            ':categoryId' => $categoryId
         ]);
     } catch (PDOException $ex) {
         sendError(
@@ -116,7 +123,8 @@ function onPOST()
         'code' => 200,
         'title' => $title,
         'filename' => $filename,
-        'description' => $description
+        'description' => $description,
+        'categoryId' => $categoryId
     ]);
     exit;
 }

@@ -28,9 +28,7 @@ function onGET()
     }
 
     if (isset($_GET['name'])) {
-
         $name = $_GET["name"];
-
         $statement = $DB->prepare("SELECT COUNT(*) from categories WHERE name = :name");
         $statement->execute([
             ':name' => $name

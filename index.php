@@ -28,6 +28,12 @@
                 <input type="text" id="title" name="title" required /><br />
                 <br />
 
+                <label name="title">Выберите категорию картинки</label><br />
+                <select name="create-picture-category" id="create-picture-category">
+                    <option value="all">Без категории</option>
+                </select>
+                <br />
+
                 <label name="description">Опишите что изображено на картинке</label><br />
                 <input type="text" id="description" name="description" required /><br />
                 <button id="btn-submit">Отправить</button>
@@ -42,7 +48,6 @@
                 <option value="desc">Сначала новые</option>
             </select><br />
             <label for="sort-category">Категория</label><br />
-            <!-- Загружать категории сюда -->
             <select name="sort-category" id="sort-category">
                 <option value="all">Все</option>
             </select>
