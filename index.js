@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   if (!out) alert("out is undefined!");
 
   getPictures();
+  getCategories();
 });
 
 // uncomment
@@ -42,9 +43,10 @@ submitButton.addEventListener("click", (e) => {
   fetch(request)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       if (data.code === 200) {
         addPictureToGallery(data);
+      } else {
+        alert(data.message);
       }
     });
 });
@@ -61,6 +63,25 @@ const getPictures = (filters = { category: "any", date: "asc" }) => {
       }
 
       for (const picture of res.data.pictures) addPictureToGallery(picture);
+    });
+};
+
+const getCategories = () => {
+  fetch("./api/gallery/categories", { method: "GET" })
+    .then((r) => r.json())
+    .then((res) => {
+      if (res.error) {
+        alert(res.error);
+        return;
+      }
+      const categoriesElement = document.querySelector("#sort-category");
+      if (!categoriesElement)
+        throw new Error("Failed to get categories element");
+
+      for (const category of res.data.categories) {
+        const categoryElement = createCategoryElement(category);
+        categoriesElement.appendChild(categoryElement);
+      }
     });
 };
 

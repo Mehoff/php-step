@@ -20,11 +20,15 @@ switch ($method) {
 
 function onGET()
 {
+    // echo $_GET;
+    // exit;
+
     $DB = connectDB();
     if (is_string($DB)) {
         sendError(404, "Failed to GET: $DB");
         exit;
     }
+
     // Handle GET parameters to edit query (category, date)
 
     // Query example
@@ -52,6 +56,7 @@ function onGET()
             'pictures' => $result->fetchAll(PDO::FETCH_ASSOC)
         )
     ], JSON_UNESCAPED_UNICODE);
+    exit;
 }
 
 function onPOST()
@@ -90,15 +95,6 @@ function onPOST()
 
     // TODO: Get file`s ext
     $filename = sha1_file($_FILES['pictureFile']['tmp_name']) . ".jpeg";
-
-    // if (!move_uploaded_file(
-    //     $_FILES['pictureFile']['tmp_name'],
-    //     sprintf(
-    //         './uploads/%s.%s',
-    //         $filename,
-    //         'jpeg'
-    //     )
-    // )) 
 
     if (!move_uploaded_file(
         $_FILES['pictureFile']['tmp_name'],
