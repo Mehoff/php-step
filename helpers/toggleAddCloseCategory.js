@@ -62,46 +62,38 @@ const closeAddCategory = () => {
 };
 
 const addCategory = (e) => {
-  // Try add new category
-
-  // Parse input
-  // Check if category with such name exists
-  // Insert if not
-  // closeAddCategory()
-
   const name = document.querySelector("#categoryName").value.trim();
   if (!name) throw new Error(`Name is incorrect to make a request: '${name}'`);
 
-  // Returns data.exists = true/false
   fetch(`./api/gallery/categories?name=${name}`, {
     method: "GET",
   })
     .then((r) => r.json())
     .then((res) => {
-      console.log(res);
       if (res.error) {
         alert(res.error);
         return;
       }
-      //   if (res.data.exists) {
-      //     // POST to create new category
-      //     const formData = new FormData();
-      //     formData.append(name);
+      if (!res.data.exists) {
+        const formData = new FormData();
+        formData.append("name", name);
 
-      //     fetch("./api/gallery/categories", {
-      //       method: "POST",
-      //       body: formData,
-      //     })
-      //       .then((r) => r.json())
-      //       .then((res) => {
-      //         if (res.error) {
-      //           alert(res.error);
-      //           return;
-      //         }
-
-      //         addCategoriesToCategoryList(res.data.categories);
-      //         closeAddCategory();
-      //       });
-      //   }
+        fetch("./api/gallery/categories", {
+          method: "POST",
+          body: formData,
+        })
+          .then((r) => r.json())
+          .then((res) => {
+            console.log(res);
+            if (res.error) {
+              alert(res.error);
+              return;
+            }
+            if (res.data) {
+              addCategoriesToCategoryList([res.data]);
+              closeAddCategory();
+            }
+          });
+      }
     });
 };

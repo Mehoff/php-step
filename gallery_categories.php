@@ -68,10 +68,44 @@ function onPOST()
         exit;
     }
 
-    // Insert new category here
+    if (
+        !isset($_POST['name'])
+    ) {
+        sendError(404, "New category name is not set");
+        exit;
+    }
 
-    echo json_encode([
-        'error' => 'Not implemented'
+    $name = $_POST['name'];
+
+    $statement = $DB->prepare("SELECT COUNT(*) from categories WHERE name = :name");
+    $statement->execute([
+        ':name' => $name
     ]);
-    exit;
+    $row = $statement->fetch(PDO::FETCH_NUM);
+
+    if ($row[0] == 1) {
+        sendError(500, "Category with this name already exists");
+        exit;
+    }
+
+    try {
+        $statement = $DB->prepare("INSERT INTO categories(name) VALUES (:name)");
+        $statement->execute([
+            ':name' => $name
+        ]);
+        $id = $DB->lastInsertId();
+        echo json_encode([
+            'data' => array(
+                'id' => $id,
+                'name' => $name
+            )
+        ]);
+        exit;
+    } catch (PDOException $ex) {
+        sendError(500,  $ex->getMessage());
+        exit;
+    }
+
+
+    // Insert new category here
 }
