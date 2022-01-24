@@ -1,6 +1,8 @@
 <?php
 
 @include "send_error.php";
+@include "connectDb.php";
+
 error_reporting(0);
 
 
@@ -20,30 +22,12 @@ switch ($method) {
 
 function onGET()
 {
-    // echo $_GET;
-    // exit;
-
     $DB = connectDB();
     if (is_string($DB)) {
         sendError(404, "Failed to GET: $DB");
         exit;
     }
 
-    // Handle GET parameters to edit query (category, date)
-
-    // Query example
-    // $query = "
-    // SELECT 
-    //     G.id,
-    //     G.filename,
-    //     G.moment,
-    //     A.iso639_1,
-    //     L.txt AS descr
-    // FROM 
-    //     Gallery G 
-    //     JOIN Literals L ON L.id_entity = G.id
-    //     JOIN Langs A ON L.id_lang = A.id
-    // " ;
 
     $query = "SELECT * FROM pictures";
     $result = $DB->query($query);
@@ -139,27 +123,19 @@ function onPOST()
     exit;
 }
 
-function connectDB()
-{
-    unset($db_config);
-    @include "db_config.php";
-    if (empty($db_config)) {
-        sendError(500, "Failed to read database connection configuration");
-    }
 
-    try {
-        $DB = new PDO(
-            "{$db_config['type']}:"
-                . "host={$db_config['host']};"
-                . "port={$db_config['port']};"
-                . "dbname={$db_config['name']};"
-                . "charset={$db_config['char']}",
-            $db_config['user'],
-            $db_config['pass'],
-        );
-        $DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $ex) {
-        sendError(500, $ex->getMessage());
-    }
-    return $DB;
-}
+// Handle GET parameters to edit query (category, date)
+            
+            // Query example
+            // $query = "
+            // SELECT 
+            //     G.id,
+            //     G.filename,
+            //     G.moment,
+            //     A.iso639_1,
+            //     L.txt AS descr
+            // FROM 
+            //     Gallery G 
+            //     JOIN Literals L ON L.id_entity = G.id
+            //     JOIN Langs A ON L.id_lang = A.id
+            // " ;
